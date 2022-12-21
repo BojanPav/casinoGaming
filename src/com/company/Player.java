@@ -45,29 +45,34 @@ public class Player {
     }
 
     public void playRoulette() {
-        Roulette roulette = new Roulette();
-        placeBets();
-        RouletteNumber winningNumber = roulette.getWinningNumber();
-        System.out.println("Winning number is: " + winningNumber.getValue() + " " + winningNumber.getColor());
+        Scanner sc = new Scanner(System.in);
+        while (currentMoney > 0) {
+            Roulette roulette = new Roulette();
+            placeBets();
+            RouletteNumber winningNumber = roulette.getWinningNumber();
+            System.out.println("Winning number is: " + winningNumber.getValue() + " " + winningNumber.getColor());
 
-        int winnings = 0;
-        for (int i = 0; i < betNums.size(); i++) {
-            if (winningNumber.getValue() == betNums.get(i)) {
-                winnings += betAmounts.get(i) * 36;
+            int winnings = 0;
+            for (int i = 0; i < betNums.size(); i++) {
+                if (winningNumber.getValue() == betNums.get(i)) {
+                    winnings += betAmounts.get(i) * 36;
+                }
+            }
+            currentMoney += winnings;
+            if (winnings > 0) {
+                System.out.println("Congratulations! You won $" + winnings + ". You now have $" + currentMoney + " on your account.");
+            } else {
+                System.out.println("Sorry, you lost. You now have $" + currentMoney + " on your account.");
+            }
+
+            System.out.println("Enter 1 to play again or any other number to quit: ");
+            int playAgain = sc.nextInt();
+            if (playAgain != 1) {
+                break;
             }
         }
-
-        // Calculate the total bet amount
-        int totalBetAmount = 0;
-        for (int betAmount : betAmounts) {
-            totalBetAmount += betAmount;
-        }
-
-        currentMoney += winnings - totalBetAmount;
-        if (winnings > 0) {
-            System.out.println("Congratulations! You won $" + winnings + ". You now have $" + currentMoney + " on your account.");
-        } else {
-            System.out.println("Sorry, you lost. You now have $" + currentMoney + " on your account.");
+        if (currentMoney <= 0) {
+            System.out.println("You have run out of money. Game over.");
         }
     }
 
