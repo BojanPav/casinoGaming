@@ -1,43 +1,41 @@
 package com.company;
 
-
 public class RouletteNumber {
-    private int    _value;
-    private String _color;
+    private int _value;
+    private Color _color;
 
-
-
-
-    public RouletteNumber(int value, String color) {
-        {
-
-            _value = value;
-            _color = color;
-        }
-
-
+    public enum Color {
+        RED, BLACK, GREEN
     }
 
-    public int get_value() {
+    public RouletteNumber(int value, Color color) {
+        _value = value;
+        _color = color;
+    }
+
+    public int getValue() {
         return _value;
     }
 
-
-
-    public void set_value(int _value) {
-        this._value = _value;
+    public void setValue(int value) {
+        this._value = value;
     }
 
-    public String get_color() {
+    public Color getColor() {
         return _color;
     }
 
-    public void set_color(String _color) {
-        this._color = _color;
+    public void setColor(Color color) {
+        this._color = color;
+    }
+
+    @Override
+    public String toString() {
+        return "RouletteNumber{" +
+                "value=" + _value +
+                ", color=" + _color +
+                '}';
     }
 }
-
-
-
 
 

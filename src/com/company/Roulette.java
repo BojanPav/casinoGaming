@@ -1,47 +1,61 @@
 package com.company;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
+import java.util.Random;
 
 public class Roulette {
 
-    RouletteNumber numbers[];
-
+    private RouletteNumber[] numbers;
 
     public Roulette() {
         createNumbers();
     }
 
-
     public void createNumbers() {
         numbers = new RouletteNumber[37];
         for (int i = 0; i < 37; i++) {
             numbers[i] = new RouletteNumber(i, setColor(i));
-            System.out.println(numbers[i].get_value() + numbers[i].get_color());
         }
     }
 
-    private static String setColor(int i) {
-
-        String red = "RED";
-        String green = "GREEN";
-        String black = "BLACK";
-
+    private RouletteNumber.Color setColor(int i) {
         if (i == 0) {
-            return green;
-        } else if (i > 0 && i < 18) {
-            return black;
-        } else return red;
+            return RouletteNumber.Color.GREEN;
+        } else if (i > 0 && i < 10) {
+            if (i % 2 == 0) {
+                return RouletteNumber.Color.BLACK;
+            } else {
+                return RouletteNumber.Color.RED;
+            }
+        } else if (i >= 10 && i < 19) {
+            if (i % 2 == 0) {
+                return RouletteNumber.Color.RED;
+            } else {
+                return RouletteNumber.Color.BLACK;
+            }
+        } else if (i >= 19 && i < 29) {
+            if (i % 2 == 0) {
+                return RouletteNumber.Color.BLACK;
+            } else {
+                return RouletteNumber.Color.RED;
+            }
+        } else if (i >= 29 && i < 37) {
+            if (i % 2 == 0) {
+                return RouletteNumber.Color.RED;
+            } else {
+                return RouletteNumber.Color.BLACK;
+            }
+        } else {
+            return RouletteNumber.Color.GREEN;
+        }
     }
 
-    public RouletteNumber WinNum () {
+    public RouletteNumber getWinningNumber() {
         Random generator = new Random();
-        int BallDrop = generator.nextInt(numbers.length);
-       return numbers[BallDrop];
+        int ballDrop = generator.nextInt(numbers.length);
+        return numbers[ballDrop];
     }
-
 }
+
 
 
 
