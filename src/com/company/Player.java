@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,7 +16,6 @@ public class Player {
         this.betNums = new ArrayList<>();
         this.betAmounts = new ArrayList<>();
     }
-
     public void placeBets() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the numbers you want to bet on (separated by spaces): ");
@@ -38,43 +36,53 @@ public class Player {
             System.out.println("Number of bet amounts does not match number of bet numbers. Please try again.");
             placeBets();
         } else {
+            betAmounts = new ArrayList<>();
             for (String s : betAmountsString) {
-                betAmounts.add(Integer.parseInt(s));
+                int betAmount = Integer.parseInt(s);
+                if (betAmount <= currentMoney) {
+                    betAmounts.add(betAmount);
+                    currentMoney -= betAmount;
+                } else {
+                    System.out.println("You don't have enough money to place this bet. Please enter your bets again.");
+                    placeBets();
+                }
             }
         }
     }
 
     public void playRoulette() {
-        Scanner sc = new Scanner(System.in);
-        while (currentMoney > 0) {
-            Roulette roulette = new Roulette();
-            placeBets();
-            RouletteNumber winningNumber = roulette.getWinningNumber();
-            System.out.println("Winning number is: " + winningNumber.getValue() + " " + winningNumber.getColor());
+            Scanner sc = new Scanner(System.in);
+            while (currentMoney > 0) {
+                int startingMoney = currentMoney;  // store the current money as starting money for the next game
+                Roulette roulette = new Roulette();
+                placeBets();
+                RouletteNumber winningNumber = roulette.getWinningNumber();
+                System.out.println("Winning number is: " + winningNumber.getValue() + " " + winningNumber.getColor());
 
-            int winnings = 0;
-            for (int i = 0; i < betNums.size(); i++) {
-                if (winningNumber.getValue() == betNums.get(i)) {
-                    winnings += betAmounts.get(i) * 36;
+                int winnings = 0;
+                for (int i = 0; i < betNums.size(); i++) {
+                    if (winningNumber.getValue() == betNums.get(i)) {
+                        winnings += betAmounts.get(i) * 36;
+                    }
+                }
+                currentMoney += winnings;
+                if (winnings > 0) {
+                    System.out.println("Congratulations! You won $" + winnings + ". You now have $" + currentMoney + " on your account.");
+                } else {
+                    System.out.println("Sorry, you lost. You now have $" + currentMoney + " on your account.");
+                }
+
+                System.out.println("Enter 1 to play again or any other number to quit: ");
+                int playAgain = sc.nextInt();
+                if (playAgain != 1) {
+                    break;
                 }
             }
-            currentMoney += winnings;
-            if (winnings > 0) {
-                System.out.println("Congratulations! You won $" + winnings + ". You now have $" + currentMoney + " on your account.");
-            } else {
-                System.out.println("Sorry, you lost. You now have $" + currentMoney + " on your account.");
+            if (currentMoney <= 0) {
+                System.out.println("You have run out of money. Game over.");
             }
+        }
 
-            System.out.println("Enter 1 to play again or any other number to quit: ");
-            int playAgain = sc.nextInt();
-            if (playAgain != 1) {
-                break;
-            }
-        }
-        if (currentMoney <= 0) {
-            System.out.println("You have run out of money. Game over.");
-        }
+
+
     }
-
-
-}
